@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+	<link href="/static/index.css" type="text/css" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato|Arvo|Rubik|Fjalla+One|Anton|Open+Sans|Oswald|Source+Sans+Pro" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script
+		src = "https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+
+	</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+	<div class="header_main">
+		
+		<div class="img_and_name_left">
+			<img src="/static/calm.png" alt="">
+			<h1>GG BOT</h1>
+			
+			
+		</div>
+
+		<div class="gist_right">
+
+			<ul>
+				<li>The chabot</li>
+				<li>For your</li>
+				<li>Stress needs</li>
+			</ul>
+			
+		</div>
+		
+	</div>
+
+	<div class="container">
+		<div class="msg-header">
+		
+		</div>
+
+	<div class="chat-page">
+	<div class="msg-inbox">
+
+		<div class="chats">
+		 <div class="msg-page">
+
+				<div class="received-chats">
+				<div class="recieved-msg">
+				<div class="recieved-msg-inbox">
+				<p>Hey good morning Hows your days</p>
+				<span class="time">11:02PM</span>
+				</div>
+				</div>
+				</div>
+
+
+			</div>
+		 </div>
+	
+	</div>
+
+	<div class="msg-bottom">
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="write message...">
+			<div class="input-group-append">
+				<span class="input-group-text">
+					<button class="butto">Send</button>
+				</span>
+			</div>
+
+	</div>
+
+	</div>
+
+		<form action="/process" method="POST">
+
+		</form>
+
+</div>
+
+<script type="text/javascript">
+
+var server = "/";
+var button = document.getElementsByClassName('butto')[0];
+button.addEventListener("click",oncli);
+var count = 0;
+var count_1 = 1;
+var socket = io();
+var message;
+var messages = [];
+var check = [];
+
+socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+    });
+
+   socket.on('my response', function(data){
+        console.log(data);
+   });
+
+
+function oncli(){
+	console.log(count);
+	var input = document.getElementsByClassName('form-control')[0].value;
+	
+	socket.send(input);
+
+	var div_chat = document.createElement("div");
+	div_chat.className += "outgoing-chats";
+
+	var	div_msg = document.createElement("div");
+	div_msg.className += "outgoing-chats-msg";
+
+	var para = document.createElement("p");
+	var node = document.createTextNode(input);
+	para.appendChild(node);
+
+	var span_time = document.createElement("SPAN");
+	span_time.className += "time";
+	var today = new Date();
+	var times = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
+	var node_span = document.createTextNode(times);
+	span_time.appendChild(node_span);
+
+	// console.log(document.getElementsByClassName("msg-page"));
+	document.getElementsByClassName("msg-page")[0].appendChild(div_chat);
+	document.getElementsByClassName("msg-page")[0].appendChild(div_msg);
+	document.getElementsByClassName("outgoing-chats-msg")[count].appendChild(para);
+	document.getElementsByClassName("outgoing-chats-msg")[count].appendChild(span_time);
+	count +=1;
+	// setTimeout(response, 3000);
+	response();
+
+}
+
+function response(){
+
+	socket.on('my responses', (data) => {
+   		message = data;
+   		messages.push(message);
+
+	});
+	setTimeout(test,3000);
+}
+
+function test(){
+
+	console.log(messages);
+	var div_response = document.createElement("div");
+	div_response.className += "received-chats";
+
+	var div_response_msg = document.createElement("div");
+	div_response_msg.className += "recieved-msg";
+
+	var div_response_msg_inbox = document.createElement("div");
+	div_response_msg_inbox.className += "recieved-msg-inbox";
+
+	check = messages[messages.length-1];
+	final = Object.values(check)
+	var para = document.createElement("p");
+	var node = document.createTextNode(final);
+	para.appendChild(node);
+
+
+	var span_time = document.createElement("SPAN");
+	span_time.className += "time";
+	var today = new Date();
+	var times = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
+	var node_span = document.createTextNode(times);
+	span_time.appendChild(node_span);
+
+
+	document.getElementsByClassName("msg-page")[0].appendChild(div_response);
+	document.getElementsByClassName("msg-page")[0].appendChild(div_response_msg);
+	document.getElementsByClassName("msg-page")[0].appendChild(div_response_msg_inbox);
+	document.getElementsByClassName("recieved-msg-inbox")[count_1].appendChild(para);
+	document.getElementsByClassName("recieved-msg-inbox")[count_1].appendChild(span_time);
+
+	count_1 +=1;
+
+
+}
+
+
+</script>
+
+</body>
+</html>
+

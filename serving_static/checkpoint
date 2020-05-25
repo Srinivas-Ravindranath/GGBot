@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/intervention/Trail main/serving_static/model.tflearn"
+all_model_checkpoint_paths: "/Users/intervention/Trail main/serving_static/model.tflearn"
